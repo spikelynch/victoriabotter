@@ -5,11 +5,20 @@ import pronouncing, random
 def syllables(w):
     return pronouncing.syllable_count(pronouncing.phones_for_word(w)[0])
 
-ings = [ w for w in pronouncing.search("IH0 NG$") if syllables(w) == 2  ]
-ows = [ w for w in pronouncing.rhymes('now') if syllables(w) == 1 ]
+def syllfilt(words, n):
+    return [ w for w in words if syllables(w) == n ]
 
-verbs = random.sample(ings, 2)
-verb2 = random.choice(pronouncing.rhymes(verbs[0]))
+ings = syllfilt(pronouncing.search("IH0 NG$"), 2)
+ows = syllfilt(pronouncing.rhymes('now'), 1)
+
+
+rhymes = []
+while not rhymes:
+    verbs = random.sample(ings, 2)
+    rhymes = syllfilt(pronouncing.rhymes(verbs[0]), 2)
+
+
+verb2 = random.choice(rhymes)
 
 ow = random.choice(ows)
 
