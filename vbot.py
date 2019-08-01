@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from botclient import Bot
 import pronouncing, random
 
 def syllables(w):
@@ -11,43 +12,41 @@ def syllfilt(words, n):
 
 class VictoriaBotter(Bot):
 
-	def render(self):
-		participles = syllfilt(pronouncing.search("IH0 NG$"), 2)
-		nouns = syllfilt(pronouncing.rhymes('now'), 1)
+    def render(self):
+        participles = syllfilt(pronouncing.search("IH0 NG$"), 2)
+        nouns = syllfilt(pronouncing.rhymes('now'), 1)
 
-		rhymes = []
-		p1 = None
-		p3 = None
-		while not rhymes:
-    		ps = random.sample(participles, 2)
-    		rhymes = syllfilt(pronouncing.rhymes(ps[0]), 2)
-		
-    	p1 = ps[0]
-		p2 = random.choice(rhymes)
-    	p3 = ps[1]
+        rhymes = []
+        p1 = None
+        p3 = None
+        while not rhymes:
+            ps = random.sample(participles, 2)
+            rhymes = syllfilt(pronouncing.rhymes(ps[0]), 2)
 
-		noun = random.choice(nouns)
+        p1 = ps[0]
+        p2 = random.choice(rhymes)
+        p3 = ps[1]
 
-		if noun[0] in 'aeoiu':
-    		noun = ' an ' + noun
-		else:
-    		noun = ' a ' + noun
+        noun = random.choice(nouns)
 
-    	text = "You can get it " + p1 + "\n"
-		text += "You can get it " + p2 + "\n"
-		text += "You can get it " + p3 + noun + "\n"
-		text += "Matter of fact I've got it now"
+        if noun[0] in 'aeoiu':
+            noun = ' an ' + noun
+        else:
+            noun = ' a ' + noun
 
-		return text
+        text = "You can get it " + p1 + "\n"
+        text += "You can get it " + p2 + "\n"
+        text += "You can get it " + p3 + noun + "\n"
+        text += "Matter of fact I've got it now"
+
+        return text
 
         
 if __name__ == '__main__':
     vb = VictoriaBotter()
     vb.configure()
-    vb.load()
     toot = vb.render()
-	vb.post(toot)
-    print(toot)
+    vb.post(toot)
 
 
 
