@@ -8,27 +8,48 @@ def syllables(w):
 def syllfilt(words, n):
     return [ w for w in words if syllables(w) == n ]
 
-ings = syllfilt(pronouncing.search("IH0 NG$"), 2)
-ows = syllfilt(pronouncing.rhymes('now'), 1)
+
+class VictoriaBotter(Bot):
+
+	def render(self):
+		participles = syllfilt(pronouncing.search("IH0 NG$"), 2)
+		nouns = syllfilt(pronouncing.rhymes('now'), 1)
+
+		rhymes = []
+		p1 = None
+		p3 = None
+		while not rhymes:
+    		ps = random.sample(participles, 2)
+    		rhymes = syllfilt(pronouncing.rhymes(ps[0]), 2)
+		
+    	p1 = ps[0]
+		p2 = random.choice(rhymes)
+    	p3 = ps[1]
+
+		noun = random.choice(nouns)
+
+		if noun[0] in 'aeoiu':
+    		noun = ' an ' + noun
+		else:
+    		noun = ' a ' + noun
+
+    	text = "You can get it " + p1 + "\n"
+		text += "You can get it " + p2 + "\n"
+		text += "You can get it " + p3 + noun + "\n"
+		text += "Matter of fact I've got it now"
+
+		return text
+
+        
+if __name__ == '__main__':
+    vb = VictoriaBotter()
+    vb.configure()
+    vb.load()
+    toot = vb.render()
+	vb.post(toot)
+    print(toot)
 
 
-rhymes = []
-while not rhymes:
-    verbs = random.sample(ings, 2)
-    rhymes = syllfilt(pronouncing.rhymes(verbs[0]), 2)
 
 
-verb2 = random.choice(rhymes)
-
-ow = random.choice(ows)
-
-if ow[0] in 'aeoiu':
-    ow = ' an ' + ow
-else:
-    ow = ' a ' + ow
-
-print("You can get it " + verbs[0])
-print("You can get it " + verb2)
-print("You can get it " + verbs[1] + ow)
-print("Matter of fact I've got it now")
 
