@@ -1,27 +1,35 @@
 #!/usr/bin/env python
 
 from botclient import Bot
-import pronouncing, random
+import re, pronouncing, random
 
-def syllables(w):
-    return pronouncing.syllable_count(pronouncing.phones_for_word(w)[0])
 
-def syllfilt(words, n):
-    return [ w for w in words if syllables(w) == n ]
 
 
 class VictoriaBotter(Bot):
+    def syllables(self, w):
+        return pronouncing.syllable_count(pronouncing.phones_for_word(w)[0])
 
+    def syllfilt(self, words, n):
+        if self.hose:
+            return [ w for w in words if self.syllables(w) == n and not self.hose.search(w) ]
+        else:
+            return [ w for w in words if self.syllables(w) == n ]
+ 
     def render(self):
-        participles = syllfilt(pronouncing.search("IH0 NG$"), 2)
-        nouns = syllfilt(pronouncing.rhymes('now'), 1)
+        if self.cf['hose']:
+            self.hose = re.compile(self.cf['hose'])
+        else:
+            self.hose = None
+        participles = self.syllfilt(pronouncing.search("IH0 NG$"), 2)
+        nouns = self.syllfilt(pronouncing.rhymes('now'), 1)
 
         rhymes = []
         p1 = None
         p3 = None
         while not rhymes:
             ps = random.sample(participles, 2)
-            rhymes = syllfilt(pronouncing.rhymes(ps[0]), 2)
+            rhymes = self.syllfilt(pronouncing.rhymes(ps[0]), 2)
 
         p1 = ps[0]
         p2 = random.choice(rhymes)
