@@ -53,8 +53,13 @@ class VictoriaBotter(Bot):
 if __name__ == '__main__':
     vb = VictoriaBotter()
     vb.configure()
+    options = {}
+    if 'content_warning' in vb.cf:
+    	options['spoiler_text'] = vb.cf['content_warning']
+    if 'visibility' in vb.cf:
+        options['visibility'] = vb.cf['visibility']
     toot = vb.render()
-    vb.post(toot)
+    vb.post(toot, options)
 
 
 
