@@ -1,0 +1,14 @@
+[project]
+name = "victoriabotter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "botclient",
+    "pronouncing>=0.2.0",
+    "setuptools>=75.8.2",
+]
+
+[tool.uv.sources]
+botclient = { git = "https://github.com/spikelynch/botclient" }
