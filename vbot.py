@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-from botclient import Bot
-import re, pronouncing, random
+from botclient.botclient import Bot
+import re
+import pronouncing
+import random
 
 
 
